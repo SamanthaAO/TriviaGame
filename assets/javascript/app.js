@@ -62,13 +62,32 @@ function countDown(){
     $("#timeLeft").text(time + " seconds remaining")
     
 }
-$("#startButton").on("click", function () {
-    if (!clockRunning) {
-        triviaTimer = setInterval(countDown, 1000);
-        clockRunning = true;
-      }
+    $("#startButton").on("click", function () {
+        $("#startButton").remove();
 
-    })
+        function displayQuestion () {
+            var questionText = "";
+            triviaQuestions.forEach(function (questions, i){
+                questionText += `<h2> ${questions.question}</h2>
+                                <div>${questions.a}</div>
+                                <div>${questions.b}</div>
+                                <div>${questions.c}</div>
+                                <div>${questions.d}</div>`;
 
+
+                if (!clockRunning) {
+                    triviaTimer = setInterval(countDown, 1000);
+                    clockRunning = true;
+                };
+
+            });
+        
+            $("#question").html(questionText);
+
+        }
+        displayQuestion();
+    });
+
+    
 
 })
