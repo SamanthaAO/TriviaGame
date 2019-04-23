@@ -1,10 +1,14 @@
 $(document).ready(function () {
 
+ //score variables   
     var corrrect = 0;
     var incorrect = 0;
     var noResponse = 0;
+    var clockRunning = false;
+    var time = 30;
+    var triviaTimer;
 
-
+//question variables
     var triviaQuestions = [
         {
             question: "1?",
@@ -12,7 +16,7 @@ $(document).ready(function () {
             b: "B1",
             c: "C1",
             d: "D1",
-            answer: c,
+            answer: "c",
         },
 
         {
@@ -21,7 +25,7 @@ $(document).ready(function () {
             b: "B2",
             c: "C2",
             d: "D2",
-            answer: a,
+            answer: "a",
         },
 
         {
@@ -30,7 +34,7 @@ $(document).ready(function () {
             b: "B3",
             c: "C3",
             d: "D3",
-            answer: b,
+            answer: "b",
         },
 
         {
@@ -39,7 +43,7 @@ $(document).ready(function () {
             b: "B4",
             c: "C4",
             d: "D4",
-            answer: a,
+            answer: "a",
         },
 
         {
@@ -48,11 +52,23 @@ $(document).ready(function () {
             b: "B5",
             c: "C5",
             d: "D5",
-            answer: d,
+            answer: "d",
         },
 
     ];
 
+function countDown(){
+    time--;
+    $("#timeLeft").text(time + " seconds remaining")
+    
+}
+$("#startButton").on("click", function () {
+    if (!clockRunning) {
+        triviaTimer = setInterval(countDown, 1000);
+        clockRunning = true;
+      }
+
+    })
 
 
 })
