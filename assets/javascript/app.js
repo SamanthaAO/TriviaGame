@@ -68,11 +68,13 @@ function countDown(){
         function displayQuestion () {
             var questionText = "";
             triviaQuestions.forEach(function (questions, i){
-                questionText += `<h2> ${questions.question}</h2>
+                questionText += `<div id= "question${i}">
+                                <h2> ${questions.question}</h2>
                                 <div>${questions.a}</div>
                                 <div>${questions.b}</div>
                                 <div>${questions.c}</div>
-                                <div>${questions.d}</div>`;
+                                <div>${questions.d}</div>
+                                </div>`;
 
 
                 if (!clockRunning) {
@@ -80,12 +82,17 @@ function countDown(){
                     clockRunning = true;
                 };
 
+                // $("#question").html(questionText);
+            
             });
         
-            $("#question").html(questionText);
+            
 
         }
-        displayQuestion();
+        i = 0;
+        displayQuestion(i);
+        $("#question").html($("#question" + i));
+        i++;
     });
 
     
