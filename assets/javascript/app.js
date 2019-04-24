@@ -75,10 +75,11 @@ $(document).ready(function () {
     function countDown() {
         time--;
         $("#timeLeft").text(time + " seconds remaining")
+
+        //coult posibly get rid of this oncee we can get it to transition past answer with the button click.
         if (time === 0) {
             clearInterval(triviaTimer);
             clockRunning = false;
-            console.log(clockRunning);
         }
     }
 
@@ -96,8 +97,14 @@ $(document).ready(function () {
         timeVar = setTimeout(function () {
             displayQuestion(i);
             $("#question").html($("#question" + i));
+            
         }, 3000);
     }
+
+    //clears timeout for question will be called if response button is hit by user
+    function stopFunction() {
+        clearTimeout(timeVar);
+      }
 
     //creates questions display
     function displayQuestion() {
@@ -137,6 +144,7 @@ $(document).ready(function () {
         </div>`;
 
             time = 3;
+            console.log(timeVar);
             if (!clockRunning) {
                 triviaTimer = setInterval(countDown, 1000);
                 answerTimeFunction();
@@ -155,15 +163,19 @@ $(document).ready(function () {
         displayQuestion(i);
         $("#question").html($("#question" + i));
 
-        //if answer button clicked
-        $(".questionButton").on("click", function () {
-            displayAnswer(i);
-            $("#question").html($("#answer" + i));
-            i++;
-            console.log(i);
-        });
+       
 
 
+    });
+
+
+     //if answer button clicked
+     $('#question').on("click", ".questionButton", function () {
+        stopFunction();
+        displayAnswer(i);
+        $("#question").html($("#answer" + i));
+        console.log(timeVar);
+        
     });
 
 
