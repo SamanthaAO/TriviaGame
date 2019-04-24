@@ -1,14 +1,17 @@
 $(document).ready(function () {
 
-//score variables   
+    //score variables   
     var corrrect = 0;
     var incorrect = 0;
     var noResponse = 0;
     var clockRunning = false;
     var time = 5;
     var triviaTimer;
+    var timeVar;
+    i = 0;
+    j=0;
 
-//question array of objects
+    //question array of objects
     var triviaQuestions = [
         {
             question: "1?",
@@ -68,85 +71,115 @@ $(document).ready(function () {
 
     ];
 
-//countdown for timer
-function countDown(){
-    time--;
-    $("#timeLeft").text(time + " seconds remaining")
-    if(time ===0){
-        clearInterval(triviaTimer);
+    //countdown for timer
+    function countDown() {
+        time--;
+        $("#timeLeft").text(time + " seconds remaining")
+        if (time === 0) {
+            clearInterval(triviaTimer);
+            clockRunning = false;
+            console.log(clockRunning);
+        }
     }
-    
-}
-//creates questions display
-function displayQuestion () {
-    var questionText = "";
-    triviaQuestions.forEach(function (questions, i){
-        questionText += `<div id= "question${i}">
+
+    //sets timeout for questions
+    function questionTimeFunction() {
+        timeVar = setTimeout(function () {
+            displayAnswer(i);
+            $("#question").html($("#answer" + i));
+            i++;
+        }, 5000);
+    }
+
+    //sets timeout for answer displays
+    function answerTimeFunction() {
+        timeVar = setTimeout(function () {
+            displayQuestion(i);
+            $("#question").html($("#question" + i));
+        }, 3000);
+    }
+
+    //creates questions display
+    function displayQuestion() {
+        var questionText = "";
+        triviaQuestions.forEach(function (questions, i) {
+            questionText += `<div id= "question${i}">
                         <h2> ${questions.question}</h2>
-                        <button class = "m-2">${questions.a}</button> <br>
-                        <button class = "m-2">${questions.b}</button> <br>
-                        <button class = "m-2">${questions.c}</button> <br>
-                        <button class = "m-2">${questions.d}</button> <br>
+                        <button class = "m-2 questionButton">${questions.a}</button> <br>
+                        <button class = "m-2 questionButton">${questions.b}</button> <br>
+                        <button class = "m-2 questionButton">${questions.c}</button> <br>
+                        <button class = "m-2 questionButton">${questions.d}</button> <br>
                         </div>`;
 
+            time = 5;
+            if (!clockRunning) {
+                triviaTimer = setInterval(countDown, 1000);
+                questionTimeFunction();
+                clockRunning = true;
+            };
 
-        if (!clockRunning) {
-            triviaTimer = setInterval(countDown, 1000);
-            clockRunning = true;
-        };
 
-        
 
-         $("#question").html(questionText);
-    });
-}
 
-//create answer page display
+            $("#question").html(questionText);
+        });
+    }
 
-function displayAnswer(){
-    var answerText = "";
-    triviaQuestions.forEach(function(answers, i){
-        answerText += `<div id= "answer${i}">
+    //create answer page display
+
+    function displayAnswer() {
+        var answerText = "";
+        triviaQuestions.forEach(function (answers, i) {
+            answerText += `<div id= "answer${i}">
         <h2> correct or incorrect here</h2>
         <div class = "m-2">The answer is: ${answers.answer}</div> <br>
         <img src="${answers.answerImage}" alt="${answers.answerImageAlt}" width="150" height="150">
         </div>`;
-        
-        time = 3;
-        if (!clockRunning) {
-            triviaTimer = setInterval(countDown, 1000);
-            clockRunning = true;
-        };
 
-        $("#question").html(answerText);
-    });
-}
+            time = 3;
+            if (!clockRunning) {
+                triviaTimer = setInterval(countDown, 1000);
+                answerTimeFunction();
+                clockRunning = true;
+            };
 
-//this will really be the whole game that is started on the click of the button
+            $("#question").html(answerText);
+        });
+    }
+
+    //this will really be the whole game that is started on the click of the button
     $("#startButton").on("click", function () {
         $("#startButton").remove();
-        
+
         // displays question 1
-        i = 0;
         displayQuestion(i);
         $("#question").html($("#question" + i));
-        i++;
 
-        // i = 0;
-        // displayAnswer(i);
-        // $("#question").html($("#answer" + i));
-        // i++;
-
+        //if answer button clicked
+        $(".questionButton").on("click", function () {
+            displayAnswer(i);
+            $("#question").html($("#answer" + i));
+            i++;
+            console.log(i);
+        });
 
 
     });
-//add what will happen if timer runs out
 
-//if correct answer
 
-//if incorrect answer
-    
-//how to stop timer
+    //add what will happen if timer runs out
 
-// clearInterval(triviaTimer);
+
+    //
+    //    
+    //     
+
+
+
+
+    //if correct answer
+
+    //if incorrect answer
+
+
 })
