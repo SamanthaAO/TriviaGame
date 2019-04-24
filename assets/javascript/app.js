@@ -174,17 +174,14 @@ $(document).ready(function () {
         stopFunction();
         displayAnswer(i);
         $("#question").html($("#answer" + i));
-        console.log(timeVar);
+        i++;
+        answerTimeFunction();
         
     });
 
 
     //add what will happen if timer runs out
-
-
-    //
-    //    
-    //     
+   
 
 
 
