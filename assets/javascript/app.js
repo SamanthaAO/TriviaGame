@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
- //score variables   
+//score variables   
     var corrrect = 0;
     var incorrect = 0;
     var noResponse = 0;
@@ -57,44 +57,55 @@ $(document).ready(function () {
 
     ];
 
+//countdown for timer
 function countDown(){
     time--;
     $("#timeLeft").text(time + " seconds remaining")
     
 }
+//creates questions display
+function displayQuestion () {
+    var questionText = "";
+    triviaQuestions.forEach(function (questions, i){
+        questionText += `<div id= "question${i}">
+                        <h2> ${questions.question}</h2>
+                        <div>${questions.a}</div>
+                        <div>${questions.b}</div>
+                        <div>${questions.c}</div>
+                        <div>${questions.d}</div>
+                        </div>`;
+
+
+        if (!clockRunning) {
+            triviaTimer = setInterval(countDown, 1000);
+            clockRunning = true;
+        };
+
+         $("#question").html(questionText);
+    
+    });
+
+//create answer page display
+
+    
+
+}
+
+//this will really be the whole game that is started on the click of the button
     $("#startButton").on("click", function () {
         $("#startButton").remove();
-
-        function displayQuestion () {
-            var questionText = "";
-            triviaQuestions.forEach(function (questions, i){
-                questionText += `<div id= "question${i}">
-                                <h2> ${questions.question}</h2>
-                                <div>${questions.a}</div>
-                                <div>${questions.b}</div>
-                                <div>${questions.c}</div>
-                                <div>${questions.d}</div>
-                                </div>`;
-
-
-                if (!clockRunning) {
-                    triviaTimer = setInterval(countDown, 1000);
-                    clockRunning = true;
-                };
-
-                // $("#question").html(questionText);
-            
-            });
         
-            
-
-        }
         i = 0;
         displayQuestion(i);
         $("#question").html($("#question" + i));
         i++;
-    });
 
+    });
+//add what will happen if timer runs out
+
+//if correct answer
+
+//if incorrect answer
     
 
 })
