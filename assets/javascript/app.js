@@ -72,6 +72,9 @@ $(document).ready(function () {
 function countDown(){
     time--;
     $("#timeLeft").text(time + " seconds remaining")
+    if(time ===0){
+        clearInterval(triviaTimer);
+    }
     
 }
 //creates questions display
@@ -123,16 +126,16 @@ function displayAnswer(){
     $("#startButton").on("click", function () {
         $("#startButton").remove();
         
-        //displays question 1
-        // i = 0;
-        // displayQuestion(i);
-        // $("#question").html($("#question" + i));
-        // i++;
-
+        // displays question 1
         i = 0;
-        displayAnswer(i);
-        $("#question").html($("#answer" + i));
+        displayQuestion(i);
+        $("#question").html($("#question" + i));
         i++;
+
+        // i = 0;
+        // displayAnswer(i);
+        // $("#question").html($("#answer" + i));
+        // i++;
 
 
 
