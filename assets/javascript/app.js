@@ -135,10 +135,24 @@ $(document).ready(function () {
                 clockRunning = true;
                 
             };
+              //create final results page
+    
+    $("#question").html(questionText);
 
-            $("#question").html(questionText);
 
         });
+
+    console.log(i + " this is i");
+    console.log(triviaQuestions.length);
+    if(i >= triviaQuestions.length){
+        stopFunction();
+        console.log("DONE!!!");
+        noResponse = noResponse - 5;
+        $("#mainText").append("<h2> You have reached the end of the game. Congratulations!</h2><div>Correct Answers: " + correct + "</div> <br> <div>Incorrect Answers: " + incorrect + "</div> <br> <div>No Response: " + noResponse + "</div>");
+        $("#timeLeft").remove();
+        $("#correct").remove();
+    }
+
     }
 
     //create answer page display
@@ -205,23 +219,14 @@ $(document).ready(function () {
         
 
         //increases i value  and calls answerTimeFunction so that next question slide will be shown
-        i++;
         answerTimeFunction();
+        i++;
+
         
-        //create final results page
-        console.log(i + " this is i");
-        console.log(triviaQuestions.length);
-        if(i >= triviaQuestions.length){
-            
-            stopFunction();
-            
-            $("#question").html("<h2> You have reached the end of the game. Congratulations!</h2> <div>Correct Answers: " + correct + "</div> <br> <div>Incorrect Answers: " + incorrect + "</div> <br> <div>No Response: " + noResponse + "</div>");
-            $("#timeLeft").remove();
-            $("#correct").remove();
-        }
 
         
     });
+    
     
 
   // make sure to subtract 5 for all of the answer slides from no response!!!!
