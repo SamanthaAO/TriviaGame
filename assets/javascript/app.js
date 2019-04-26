@@ -7,12 +7,12 @@ $(document).ready(function () {
 
     //time variables
     var clockRunning = false;
-    var time = 5;
+    var time;
     var triviaTimer;
     var timeVar;
 
     //variable used for counting
-    i = 0;
+    var i = 0;
 
     //question array of objects
     var triviaQuestions = [
@@ -78,17 +78,18 @@ $(document).ready(function () {
     function countDown() {
         $("#timeLeft").text(time + " seconds remaining")
         time--;
-        
+        console.log(time);
+
 
         //This is what counts no responses.
         if (time === 0) {
             clearInterval(triviaTimer);
             clockRunning = false;
-                console.log('no response');
-                    noResponse++;
-                    console.log(noResponse);
-                    $("#correct").html("No Response");
-                
+            console.log('no response');
+            noResponse++;
+            console.log(noResponse);
+            $("#correct").html("No Response");
+
         }
     }
 
@@ -106,14 +107,14 @@ $(document).ready(function () {
         timeVar = setTimeout(function () {
             displayQuestion(i);
             $("#question").html($("#question" + i));
-            
+
         }, 3000);
     }
 
     //clears timeout for question will be called if response button is hit by user
     function stopFunction() {
         clearTimeout(timeVar);
-      }
+    }
 
     //creates questions page display
     function displayQuestion() {
@@ -133,25 +134,28 @@ $(document).ready(function () {
                 triviaTimer = setInterval(countDown, 1000);
                 questionTimeFunction();
                 clockRunning = true;
-                
+
             };
-              //create final results page
-    
-    $("#question").html(questionText);
+
+
+            $("#question").html(questionText);
 
 
         });
 
-    console.log(i + " this is i");
-    console.log(triviaQuestions.length);
-    if(i >= triviaQuestions.length){
-        stopFunction();
-        console.log("DONE!!!");
-        noResponse = noResponse - 5;
-        $("#mainText").append("<h2> You have reached the end of the game. Congratulations!</h2><div>Correct Answers: " + correct + "</div> <br> <div>Incorrect Answers: " + incorrect + "</div> <br> <div>No Response: " + noResponse + "</div>");
-        $("#timeLeft").remove();
-        $("#correct").remove();
-    }
+        //create final results page aka the last question page
+        console.log(i + " this is i");
+        console.log(triviaQuestions.length);
+        if (i >= triviaQuestions.length) {
+            stopFunction();
+            console.log("DONE!!!");
+            //the -5 is becuase currently the answer pages count as no response.
+            noResponse = noResponse - 5;
+            $("#results").append("<h2> You have reached the end of the game. Congratulations!</h2><div>Correct Answers: " + correct + "</div> <br> <div>Incorrect Answers: " + incorrect + "</div> <br> <div>No Response: " + noResponse + "</div>");
+            $("#results").append("<button type='button' class='btn btn-primary mt-5' id='restartButton'>Restart Game</button>");
+            $("#timeLeft").hide();
+            $("#correct").hide();
+        }
 
     }
 
@@ -173,9 +177,9 @@ $(document).ready(function () {
             };
 
             $("#question").html(answerText);
-            
+
         });
-        
+
     }
 
     //on start button atarts on first question slide
@@ -189,56 +193,76 @@ $(document).ready(function () {
     });
 
 
-     //if answer button clicked
-     $('#question').on("click", ".questionButton", function () {
-        
+    //if answer button clicked
+    $('#question').on("click", ".questionButton", function () {
+
         //stop timeout and go directly to answer slide
         stopFunction();
 
-            //if correct answer
-            if(this.id === triviaQuestions[i].answer){
-                console.log('correct');
-                 $("#question").prepend("correct");
-                correct++;
-                console.log(correct);
-                $("#correct").html("CORRECT!");
-            }
+        //if correct answer
+        if (this.id === triviaQuestions[i].answer) {
+            console.log('correct');
+            $("#question").prepend("correct");
+            correct++;
+            console.log(correct);
+            $("#correct").html("CORRECT!");
+        }
 
-            //if incorrect answer
-            else if(this.id !== triviaQuestions[i].answer){
-                console.log('incorrect');
-                incorrect++;
-                console.log(incorrect);
-                $("#correct").html("INCORRECT!");
-            }
+        //if incorrect answer
+        else if (this.id !== triviaQuestions[i].answer) {
+            console.log('incorrect');
+            incorrect++;
+            console.log(incorrect);
+            $("#correct").html("INCORRECT!");
+        }
 
-                
+
         //shows answer page connected to question
         displayAnswer(i);
         $("#question").html($("#answer" + i));
-        
+
 
         //increases i value  and calls answerTimeFunction so that next question slide will be shown
         answerTimeFunction();
         i++;
-
-        
-
-        
     });
+
+
+    //restart button
+    $('#results').on("click", "#restartButton", function(){
     
-    
+        //get rid of results card
+        $('#results').empty();
+        $("#timeLeft").show();
+        $("#correct").show();
 
-  // make sure to subtract 5 for all of the answer slides from no response!!!!
+        //score variables   
+        correct = 0;
+        incorrect = 0;
+        noResponse = 0;
+
+        //time variables
+        clockRunning = false;
+        time = 0;
+
+        //variable used for counting
+        i = 0;
+
+        // displays question 1
+        displayQuestion(i);
+        $("#question").html($("#question" + i));
+
+    });
+
+ 
 
 
-  
 
 
 
-    
 
-    
+
+
 
 
 })
