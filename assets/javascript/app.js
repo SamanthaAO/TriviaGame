@@ -4,12 +4,15 @@ $(document).ready(function () {
     var correct = 0;
     var incorrect = 0;
     var noResponse = 0;
+
+    //time variables
     var clockRunning = false;
     var time = 5;
     var triviaTimer;
     var timeVar;
+
+    //variable used for counting
     i = 0;
-    j=0;
 
     //question array of objects
     var triviaQuestions = [
@@ -77,7 +80,7 @@ $(document).ready(function () {
         time--;
         
 
-        //coult posibly get rid of this oncee we can get it to transition past answer with the button click.
+        //This is what counts no responses.
         if (time === 0) {
             clearInterval(triviaTimer);
             clockRunning = false;
@@ -88,7 +91,7 @@ $(document).ready(function () {
         }
     }
 
-    //sets timeout for questions
+    //sets timeout for questions will then change page to answer for the slide
     function questionTimeFunction() {
         timeVar = setTimeout(function () {
             displayAnswer(i);
@@ -97,7 +100,7 @@ $(document).ready(function () {
         }, 5000);
     }
 
-    //sets timeout for answer displays
+    //sets timeout for answer displays will then change slide to next question
     function answerTimeFunction() {
         timeVar = setTimeout(function () {
             displayQuestion(i);
@@ -111,7 +114,7 @@ $(document).ready(function () {
         clearTimeout(timeVar);
       }
 
-    //creates questions display
+    //creates questions page display
     function displayQuestion() {
         var questionText = "";
         triviaQuestions.forEach(function (questions, i) {
@@ -131,16 +134,12 @@ $(document).ready(function () {
                 
             };
 
-            
-
-
-
             $("#question").html(questionText);
+
         });
     }
 
     //create answer page display
-
     function displayAnswer() {
         var answerText = "";
         triviaQuestions.forEach(function (answers, i) {
@@ -151,7 +150,6 @@ $(document).ready(function () {
         </div>`;
 
             time = 3;
-            console.log(timeVar);
             if (!clockRunning) {
                 triviaTimer = setInterval(countDown, 1000);
                 answerTimeFunction();
@@ -162,7 +160,7 @@ $(document).ready(function () {
         });
     }
 
-    //this will really be the whole game that is started on the click of the button
+    //on start button atarts on first question slide
     $("#startButton").on("click", function () {
         $("#startButton").remove();
 
@@ -179,10 +177,8 @@ $(document).ready(function () {
      //if answer button clicked
      $('#question').on("click", ".questionButton", function () {
         
+        //stop timeout and go directly to answer slide
         stopFunction();
-
-            console.log(this.innerText);
-            console.log(triviaQuestions[i].answer)
 
             //if correct answer
             if(this.id === triviaQuestions[i].answer){
@@ -200,18 +196,12 @@ $(document).ready(function () {
             }
 
                 
-
-            
-
+        //shows answer page connected to question
         displayAnswer(i);
-
         $("#question").html($("#answer" + i));
         
 
-        
-        
-
-
+        //increases i value  and calls answerTimeFunction so that next question slide will be shown
         i++;
         answerTimeFunction();
         
