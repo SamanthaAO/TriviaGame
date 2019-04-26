@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     //score variables   
-    var corrrect = 0;
+    var correct = 0;
     var incorrect = 0;
     var noResponse = 0;
     var clockRunning = false;
@@ -73,13 +73,18 @@ $(document).ready(function () {
 
     //countdown for timer
     function countDown() {
-        time--;
         $("#timeLeft").text(time + " seconds remaining")
+        time--;
+        
 
         //coult posibly get rid of this oncee we can get it to transition past answer with the button click.
         if (time === 0) {
             clearInterval(triviaTimer);
             clockRunning = false;
+                console.log('no response');
+                    noResponse++;
+                    console.log(noResponse);
+                
         }
     }
 
@@ -112,10 +117,10 @@ $(document).ready(function () {
         triviaQuestions.forEach(function (questions, i) {
             questionText += `<div id= "question${i}">
                         <h2> ${questions.question}</h2>
-                        <button class = "m-2 questionButton">${questions.a}</button> <br>
-                        <button class = "m-2 questionButton">${questions.b}</button> <br>
-                        <button class = "m-2 questionButton">${questions.c}</button> <br>
-                        <button class = "m-2 questionButton">${questions.d}</button> <br>
+                        <button id="${questions.a}"class = "m-2 questionButton">${questions.a}</button> <br>
+                        <button id="${questions.b}"class = "m-2 questionButton">${questions.b}</button> <br>
+                        <button id="${questions.c}"class = "m-2 questionButton">${questions.c}</button> <br>
+                        <button id="${questions.d}"class = "m-2 questionButton">${questions.d}</button> <br>
                         </div>`;
 
             time = 5;
@@ -123,8 +128,10 @@ $(document).ready(function () {
                 triviaTimer = setInterval(countDown, 1000);
                 questionTimeFunction();
                 clockRunning = true;
+                
             };
 
+            
 
 
 
@@ -138,7 +145,7 @@ $(document).ready(function () {
         var answerText = "";
         triviaQuestions.forEach(function (answers, i) {
             answerText += `<div id= "answer${i}">
-        <h2> correct or incorrect here</h2>
+        <h2 id = "correct-incorrect"> </h2>
         <div class = "m-2">The answer is: ${answers.answer}</div> <br>
         <img src="${answers.answerImage}" alt="${answers.answerImageAlt}" width="150" height="150">
         </div>`;
@@ -171,24 +178,57 @@ $(document).ready(function () {
 
      //if answer button clicked
      $('#question').on("click", ".questionButton", function () {
+        
         stopFunction();
+
+            console.log(this.innerText);
+            console.log(triviaQuestions[i].answer)
+
+            //if correct answer
+            if(this.id === triviaQuestions[i].answer){
+                console.log('correct');
+                 $("#question").prepend("correct");
+                correct++;
+                console.log(correct);
+            }
+
+            //if incorrect answer
+            else if(this.id !== triviaQuestions[i].answer){
+                console.log('incorrect');
+                incorrect++;
+                console.log(incorrect);
+            }
+
+                
+
+            
+
         displayAnswer(i);
+
         $("#question").html($("#answer" + i));
+        
+
+        
+        
+
+
         i++;
         answerTimeFunction();
+        
         
     });
 
 
-    //add what will happen if timer runs out
-   
+  // make sure to subtract 5 for all of the answer slides from no response!!!!
 
 
 
 
-    //if correct answer
 
-    //if incorrect answer
+    
+
+    
 
 
 })
+
