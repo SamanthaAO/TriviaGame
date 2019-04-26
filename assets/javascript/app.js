@@ -87,6 +87,7 @@ $(document).ready(function () {
                 console.log('no response');
                     noResponse++;
                     console.log(noResponse);
+                    $("#correct").html("No Response");
                 
         }
     }
@@ -116,6 +117,7 @@ $(document).ready(function () {
 
     //creates questions page display
     function displayQuestion() {
+        $("#correct").empty();
         var questionText = "";
         triviaQuestions.forEach(function (questions, i) {
             questionText += `<div id= "question${i}">
@@ -157,7 +159,9 @@ $(document).ready(function () {
             };
 
             $("#question").html(answerText);
+            
         });
+        
     }
 
     //on start button atarts on first question slide
@@ -167,9 +171,6 @@ $(document).ready(function () {
         // displays question 1
         displayQuestion(i);
         $("#question").html($("#question" + i));
-
-       
-
 
     });
 
@@ -186,6 +187,7 @@ $(document).ready(function () {
                  $("#question").prepend("correct");
                 correct++;
                 console.log(correct);
+                $("#correct").html("CORRECT!");
             }
 
             //if incorrect answer
@@ -193,6 +195,7 @@ $(document).ready(function () {
                 console.log('incorrect');
                 incorrect++;
                 console.log(incorrect);
+                $("#correct").html("INCORRECT!");
             }
 
                 
@@ -205,13 +208,26 @@ $(document).ready(function () {
         i++;
         answerTimeFunction();
         
+        //create final results page
+        console.log(i + " this is i");
+        console.log(triviaQuestions.length);
+        if(i >= triviaQuestions.length){
+            
+            stopFunction();
+            
+            $("#question").html("<h2> You have reached the end of the game. Congratulations!</h2> <div>Correct Answers: " + correct + "</div> <br> <div>Incorrect Answers: " + incorrect + "</div> <br> <div>No Response: " + noResponse + "</div>");
+            $("#timeLeft").remove();
+            $("#correct").remove();
+        }
+
         
     });
-
+    
 
   // make sure to subtract 5 for all of the answer slides from no response!!!!
 
 
+  
 
 
 
