@@ -10,6 +10,7 @@ $(document).ready(function () {
     var time;
     var triviaTimer;
     var timeVar;
+    var isAnswerSelected = false;
 
     //variable used for counting
     var i = 0;
@@ -82,7 +83,7 @@ $(document).ready(function () {
 
 
         //This is what counts no responses.
-        if (time === 0) {
+        if (time === 0 && !isAnswerSelected) {
             clearInterval(triviaTimer);
             clockRunning = false;
             console.log('no response');
@@ -120,7 +121,8 @@ $(document).ready(function () {
     function displayQuestion() {
         $("#correct").empty();
         var questionText = "";
-        triviaQuestions.forEach(function (questions, i) {
+        if (i<triviaQuestions.length){
+        var questions = triviaQuestions[i];
             questionText += `<div id= "question${i}">
                         <h2 class="mb-5"> ${questions.question}</h2>
                         <button id="${questions.a}"class = "m-2 questionButton btn btn-dark btn-block">${questions.a}</button> <br>
@@ -139,18 +141,17 @@ $(document).ready(function () {
 
 
             $("#question").html(questionText);
-
-
-        });
+            isAnswerSelected = false;
 
         //create final results page aka the last question page
         console.log(i + " this is i");
         console.log(triviaQuestions.length);
-        if (i >= triviaQuestions.length) {
+    }
+        else{
             stopFunction();
             console.log("DONE!!!");
             //the -5 is becuase currently the answer pages count as no response.
-            noResponse = noResponse - 5;
+            clearInterval(triviaTimer);
             $("#results").append("<h2> You have reached the end of the game. Congratulations!</h2><div>Correct Answers: " + correct + "</div> <br> <div>Incorrect Answers: " + incorrect + "</div> <br> <div>No Response: " + noResponse + "</div>");
             $("#results").append("<button type='button' class='btn btn-dark mt-5' id='restartButton'>Restart Game</button>");
             $("#timeLeft").hide();
@@ -162,7 +163,8 @@ $(document).ready(function () {
     //create answer page display
     function displayAnswer() {
         var answerText = "";
-        triviaQuestions.forEach(function (answers, i) {
+        // triviaQuestions.forEach(function (answers, i) {
+            var answers = triviaQuestions[i];
             answerText += `<div id= "answer${i}">
         <h2 id = "correct-incorrect"> </h2>
         <div class = "m-2">The answer is: ${answers.answer}</div> <br>
@@ -178,7 +180,7 @@ $(document).ready(function () {
 
             $("#question").html(answerText);
 
-        });
+        // });
 
     }
 
@@ -197,6 +199,7 @@ $(document).ready(function () {
     //if answer button clicked
     $('#question').on("click", ".questionButton", function () {
 
+        isAnswerSelected = true;
         //stop timeout and go directly to answer slide
         stopFunction();
 
