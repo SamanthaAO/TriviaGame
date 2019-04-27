@@ -1,0 +1,13 @@
+#titleImage, #throne {
+    display: block;
+    margin: 0 auto;
+}
+#correct{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+body {
+    /* background-color: lightgrey; */
+}
