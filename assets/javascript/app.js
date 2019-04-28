@@ -9,7 +9,7 @@ $(document).ready(function () {
     var clockRunning = false;
     var time;
     var triviaTimer;
-    var timeVar;
+    // var timeVar;
     var isAnswerSelected = false;
 
     //variable used for counting
@@ -75,46 +75,39 @@ $(document).ready(function () {
 
     ];
 
+    //stops the clock
+    function stopClock(){
+        clearInterval(triviaTimer);
+        clockRunning = false;
+    }
+
     //countdown for timer
     function countDown() {
         $("#timeLeft").text(time + " seconds remaining")
         time--;
-        console.log(time);
 
 
-        //This is what counts no responses.
-        if (time === 0 && !isAnswerSelected) {
-            clearInterval(triviaTimer);
-            clockRunning = false;
-            console.log('no response');
+        //This is what counts no responses and then changes it to the answer slide.
+        if(time === 0 && !isAnswerSelected) {
+            stopClock();
+
             noResponse++;
-            console.log(noResponse);
             $("#correct").html("No Response");
 
-        }
-    }
-
-    //sets timeout for questions will then change page to answer for the slide
-    function questionTimeFunction() {
-        timeVar = setTimeout(function () {
             displayAnswer(i);
-            $("#question").html($("#answer" + i));
             i++;
-        }, 5000);
-    }
+            isAnswerSelected = true;
 
-    //sets timeout for answer displays will then change slide to next question
-    function answerTimeFunction() {
-        timeVar = setTimeout(function () {
+        }
+
+        //this displays question when answer slide times out
+        else if(time === 0 && isAnswerSelected) {
+            stopClock();
+
             displayQuestion(i);
-            $("#question").html($("#question" + i));
+        
 
-        }, 3000);
-    }
-
-    //clears timeout for question will be called if response button is hit by user
-    function stopFunction() {
-        clearTimeout(timeVar);
+        }
     }
 
     //creates questions page display
@@ -134,24 +127,19 @@ $(document).ready(function () {
             time = 5;
             if (!clockRunning) {
                 triviaTimer = setInterval(countDown, 1000);
-                questionTimeFunction();
                 clockRunning = true;
-
             };
-
 
             $("#question").html(questionText);
             isAnswerSelected = false;
+    }
 
         //create final results page aka the last question page
-        console.log(i + " this is i");
-        console.log(triviaQuestions.length);
-    }
         else{
-            stopFunction();
-            console.log("DONE!!!");
-            //the -5 is becuase currently the answer pages count as no response.
-            clearInterval(triviaTimer);
+            stopClock();
+
+            $("#question").empty();
+
             $("#results").append("<h2> You have reached the end of the game. Congratulations!</h2><div>Correct Answers: " + correct + "</div> <br> <div>Incorrect Answers: " + incorrect + "</div> <br> <div>No Response: " + noResponse + "</div>");
             $("#results").append("<button type='button' class='btn btn-dark mt-5' id='restartButton'>Restart Game</button>");
             $("#timeLeft").hide();
@@ -163,9 +151,8 @@ $(document).ready(function () {
     //create answer page display
     function displayAnswer() {
         var answerText = "";
-        // triviaQuestions.forEach(function (answers, i) {
-            var answers = triviaQuestions[i];
-            answerText += `<div id= "answer${i}">
+        var answers = triviaQuestions[i];
+        answerText += `<div id= "answer${i}">
         <h2 id = "correct-incorrect"> </h2>
         <div class = "m-2">The answer is: ${answers.answer}</div> <br>
         <img src="${answers.answerImage}" alt="${answers.answerImageAlt}">
@@ -174,14 +161,10 @@ $(document).ready(function () {
             time = 3;
             if (!clockRunning) {
                 triviaTimer = setInterval(countDown, 1000);
-                answerTimeFunction();
                 clockRunning = true;
             };
 
             $("#question").html(answerText);
-
-        // });
-
     }
 
     //on start button atarts on first question slide
@@ -191,7 +174,6 @@ $(document).ready(function () {
 
         // displays question 1
         displayQuestion(i);
-        $("#question").html($("#question" + i));
 
     });
 
@@ -200,34 +182,24 @@ $(document).ready(function () {
     $('#question').on("click", ".questionButton", function () {
 
         isAnswerSelected = true;
-        //stop timeout and go directly to answer slide
-        stopFunction();
+        stopClock();
 
         //if correct answer
         if (this.id === triviaQuestions[i].answer) {
-            console.log('correct');
-            $("#question").prepend("correct");
             correct++;
-            console.log(correct);
             $("#correct").html("CORRECT!");
         }
 
         //if incorrect answer
         else if (this.id !== triviaQuestions[i].answer) {
-            console.log('incorrect');
             incorrect++;
-            console.log(incorrect);
             $("#correct").html("INCORRECT!");
         }
 
-
         //shows answer page connected to question
         displayAnswer(i);
-        $("#question").html($("#answer" + i));
 
-
-        //increases i value  and calls answerTimeFunction so that next question slide will be shown
-        answerTimeFunction();
+        //increases i value  so that the next question will be called when thee answer is done displaying
         i++;
     });
 
@@ -240,12 +212,12 @@ $(document).ready(function () {
         $("#timeLeft").show();
         $("#correct").show();
 
-        //score variables   
+        //score variables back to 0  
         correct = 0;
         incorrect = 0;
         noResponse = 0;
 
-        //time variables
+        //time variables bakc to 0 and not running
         clockRunning = false;
         time = 0;
 
@@ -254,20 +226,8 @@ $(document).ready(function () {
 
         // displays question 1
         displayQuestion(i);
-        $("#question").html($("#question" + i));
 
     });
-
- 
-
-
-
-
-
-
-
-
-
 
 })
 
