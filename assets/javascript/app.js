@@ -124,7 +124,7 @@ $(document).ready(function () {
                         <button id="${questions.d}"class = "m-2 questionButton btn btn-dark btn-block">${questions.d}</button> <br>
                         </div>`;
 
-            time = 5;
+            time = 20;
             if (!clockRunning) {
                 triviaTimer = setInterval(countDown, 1000);
                 clockRunning = true;
@@ -158,7 +158,7 @@ $(document).ready(function () {
         <img src="${answers.answerImage}" alt="${answers.answerImageAlt}">
         </div>`;
 
-            time = 3;
+            time = 10;
             if (!clockRunning) {
                 triviaTimer = setInterval(countDown, 1000);
                 clockRunning = true;
